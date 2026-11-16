@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<link rel="icon" href="data:," />
+<title>CreatorDock — VRChat Creator Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;700;800;900&family=Bangers&family=Bebas+Neue&family=Cinzel:wght@700;900&family=Fredoka:wght@600;700&family=Inter:wght@400;500;600;700&family=Luckiest+Guy&family=Orbitron:wght@700;900&family=Oswald:wght@600;700&family=Pacifico&family=Permanent+Marker&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07141c; --bg2:#0a1e2a; --panel:#0d2433; --panel2:#102e40;
+  --line:#1c4258; --line2:#265a74;
+  --ink:#eef7fa; --muted:#a8c3cf; --faint:#7fa0af;
+  --teal:#2dd4bf; --teal-dark:#0f766e; --cyan:#38bdf8;
+  --amber:#fbbf24; --red:#f87171; --green:#4ade80;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--cyan)}
+button,[role="button"],select,input,textarea,label.filebtn{min-height:44px}
+h1,h2,h3,.display{font-family:Archivo,Inter,system-ui,sans-serif;letter-spacing:-.02em;line-height:1.05;margin:0}
+img{max-width:100%;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* NAV */
+header{position:sticky;top:0;z-index:50;background:rgba(7,20,28,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:16px;min-height:64px}
+.logo{font-family:Archivo,sans-serif;font-weight:900;font-size:22px;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo-mark{width:36px;height:36px;border-radius:9px;background:var(--teal);color:#04201c;display:grid;place-items:center;font-size:19px;font-weight:900;flex:none}
+.logo span{color:var(--teal)}
+.navlinks{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.navlinks a{color:var(--muted);text-decoration:none;font-weight:600;font-size:15px;padding:10px 12px;border-radius:9px;min-height:44px;display:inline-flex;align-items:center}
+.navlinks a:hover{background:var(--panel);color:var(--ink)}
+.nav-cta{background:var(--teal);color:#04201c !important}
+
+/* HERO */
+.hero{padding:56px 0 36px;background:var(--bg2);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;border:44px solid rgba(45,212,191,.08);pointer-events:none}
+.hero::before{content:"";position:absolute;left:-80px;bottom:-160px;width:300px;height:300px;border-radius:50%;border:36px solid rgba(56,189,248,.06);pointer-events:none}
+.hero-grid{position:relative;z-index:1}
+.kicker{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line2);color:var(--teal);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;border-radius:999px}
+.hero h1{font-size:clamp(38px,6vw,62px);font-weight:900;margin:18px 0 14px;max-width:720px}
+.hero h1 em{font-style:normal;color:var(--teal)}
+.hero p.lede{font-size:18px;color:var(--muted);max-width:640px;margin:0 0 26px}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:11px;padding:13px 20px;font-weight:700;font-size:16px;cursor:pointer;text-decoration:none;min-height:48px}
+.btn-primary{background:var(--teal);color:#04201c}
+.btn-primary:hover{background:#5eead4}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line2)}
+.btn-ghost:hover{border-color:var(--teal)}
+.btn-small{padding:9px 14px;font-size:14px;min-height:40px;border-radius:9px}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:32px}
+.hero-stats div b{display:block;font-family:Archivo,sans-serif;font-size:22px}
+.hero-stats div span{color:var(--faint);font-size:13px;font-weight:600}
+
+/* FEATURED STRIP */
+.featured-strip{padding:28px 0 8px}
+.strip-card{background:var(--panel);border:1px solid var(--amber);border-radius:var(--radius);padding:20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.badge-featured{background:#451a03;color:var(--amber);border:1px solid #92400e}
+.badge-open{background:#052e16;color:var(--green);border:1px solid #166534}
+.badge-closed{background:#2a0a0a;color:var(--red);border:1px solid #7f1d1d}
+.avatar{width:64px;height:64px;border-radius:14px;flex:none;display:grid;place-items:center;font-family:Archivo,sans-serif;font-weight:900;font-size:26px;color:#04201c;background:var(--teal)}
+.strip-card h3{font-size:22px}
+.strip-card p{margin:4px 0 0;color:var(--muted)}
+.strip-card .spacer{margin-left:auto}
+
+/* SECTIONS */
+section.block{padding:52px 0}
+section.block.alt{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sec-head{max-width:680px;margin-bottom:26px}
+.sec-head h2{font-size:clamp(28px,4vw,38px);font-weight:900;margin-bottom:8px}
+.sec-head p{color:var(--muted);margin:0;font-size:16px}
+
+/* TOOL TABS */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tab{border:1.5px solid var(--line2);background:var(--panel);color:var(--muted);border-radius:11px;padding:11px 16px;font-weight:700;font-size:15px;cursor:pointer;min-height:48px}
+.tab[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:#04201c}
+.tool{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
+.tool-grid{display:grid;grid-template-columns:340px 1fr;gap:24px}
+@media(max-width:820px){.tool-grid{grid-template-columns:1fr}}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
+.field .hint{font-weight:400;color:var(--faint);font-size:13px}
+input[type="text"],input[type="url"],select,textarea{width:100%;background:var(--bg);border:1.5px solid var(--line2);color:var(--ink);border-radius:10px;padding:11px 12px;font:inherit;font-size:15px}
+input[type="range"]{width:100%;accent-color:var(--teal);min-height:36px}
+textarea{resize:vertical}
+.filebtn{display:block;width:100%;background:var(--panel2);border:1.5px dashed var(--line2);color:var(--ink);border-radius:11px;padding:8px;font-weight:700;cursor:pointer;font:inherit;font-size:14px;min-height:48px}
+.filebtn:hover{border-color:var(--teal)}
+.filebtn::file-selector-button{background:var(--teal);color:#04201c;border:0;border-radius:8px;padding:10px 14px;font-weight:800;font:inherit;font-size:14px;margin-right:10px;cursor:pointer;min-height:40px}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.swatch{width:44px;height:44px;border-radius:10px;border:3px solid transparent;cursor:pointer;padding:0;min-height:44px}
+.swatch[aria-pressed="true"]{border-color:var(--teal);outline:2px solid var(--bg)}
+.check{display:flex;gap:10px;align-items:center;font-weight:600;cursor:pointer;padding:8px 0;min-height:44px}
+.check input{width:22px;height:22px;accent-color:var(--teal);flex:none}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{border:1.5px solid var(--line2);background:var(--bg);color:var(--muted);border-radius:9px;padding:9px 12px;font-weight:700;font-size:14px;cursor:pointer;min-height:44px}
+.seg button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#04201c}
+.previewbox{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px}
+.previewbox canvas,.previewbox img.preview-img{width:100%;height:auto;border-radius:8px;background:#02090e}
+#thumbCanvas{touch-action:none;cursor:grab}
+#thumbCanvas.dragging{cursor:grabbing}
+#thumbCanvas:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:14px}
+.meta b{color:var(--ink)}
+.save-note{color:var(--green);font-weight:700}
+.empty-note{border:1.5px dashed var(--line2);border-radius:12px;padding:26px;text-align:center;color:var(--faint)}
+.why{background:var(--panel2);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--muted);margin-bottom:18px}
+.why b{color:var(--teal)}
+
+/* FONT PICKER + GENERATOR */
+.fontgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fontbtn{border:1.5px solid var(--line2);background:var(--bg);color:var(--ink);border-radius:10px;padding:10px 10px 8px;cursor:pointer;text-align:left;min-height:56px;line-height:1.1}
+.fontbtn small{display:block;font-family:Inter,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-top:5px}
+.fontbtn span{display:block;font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fontbtn[aria-pressed="true"]{border-color:var(--teal);background:#0b2f2a;box-shadow:inset 0 0 0 1px var(--teal)}
+.fontbtn[aria-pressed="true"] small{color:var(--teal)}
+.font-list{display:flex;flex-direction:column;gap:12px;max-height:760px;overflow:auto;padding-right:2px}
+@media(max-width:820px){.font-list{max-height:none;overflow:visible}}
+.font-card{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px 16px 12px}
+.font-card-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.font-card-head b{font-size:13px;letter-spacing:.07em;text-transform:uppercase}
+.font-card-head span{color:var(--faint);font-size:12px;font-weight:600}
+.font-preview{word-break:break-word;line-height:1.15;padding:14px 12px;border-radius:10px;background:#04141d;border:1px solid #122f3f;min-height:72px;display:flex;align-items:center}
+.font-preview.on-light{background:#eef7fa}
+.font-preview.on-teal{background:#0f766e}
+.font-preview.on-transparent{background:repeating-conic-gradient(#122a38 0% 25%, #0a1e2a 0% 50%) 0 0/18px 18px}
+.font-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.font-actions .btn{flex:1}
+
+/* DIRECTORY */
+.dir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.dir-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.dir-grid{grid-template-columns:1fr}}
+.creator-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:10px}
+.creator-card.featured{border-color:var(--amber)}
+.creator-card.empty{border-style:dashed;align-items:flex-start;justify-content:center;color:var(--muted)}
+.creator-top{display:flex;gap:12px;align-items:center}
+.creator-top .avatar{width:52px;height:52px;font-size:21px;border-radius:11px}
+.creator-card h3{font-size:19px}
+.tagline{color:var(--muted);font-size:14px;margin:0}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{background:var(--panel2);border:1px solid var(--line);color:var(--muted);font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px}
+.creator-card .btn{margin-top:auto}
+
+/* DETAIL */
+.detail{display:none;background:var(--panel);border:1px solid var(--line2);border-radius:18px;padding:24px;margin-top:20px}
+.detail.open{display:block}
+.detail-head{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.detail-head .avatar{width:72px;height:72px;font-size:30px}
+.listings{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+@media(max-width:900px){.listings{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.listings{grid-template-columns:1fr}}
+.listing{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.listing h4{margin:0;font-size:16px;font-family:Archivo,sans-serif}
+.listing .type{color:var(--teal);font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.listing .price{font-weight:800;font-size:17px}
+.listing .btn{margin-top:auto}
+
+/* PRICING / GET LISTED */
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+@media(max-width:700px){.price-grid{grid-template-columns:1fr}}
+.price-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+.price-card.hot{border-color:var(--amber)}
+.price-card h3{font-size:20px;margin-bottom:4px}
+.price-card .amount{font-family:Archivo,sans-serif;font-size:30px;font-weight:900}
+.price-card ul{margin:12px 0 0;padding-left:20px;color:var(--muted)}
+.form-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.form-grid{grid-template-columns:1fr}}
+.radio-row{display:flex;gap:10px;flex-wrap:wrap}
+.radio-pill{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line2);border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;min-height:48px}
+.radio-pill input{width:20px;height:20px;accent-color:var(--teal)}
+.confirm{display:none;background:#052e16;border:1px solid #166534;border-radius:12px;padding:16px;margin-top:18px}
+.confirm.show{display:block}
+.confirm h3{color:var(--green);font-size:17px;margin-bottom:6px}
+#summaryBox{white-space:pre-wrap;word-break:break-word;background:var(--bg);border:1px solid var(--line2);border-radius:10px;padding:14px;font-size:14px;color:var(--ink);margin:12px 0}
+footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--faint);font-size:14px}
+footer .wrap{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top"><span class="logo-mark">⚓</span>Creator<span>Dock</span></a>
+    <nav class="navlinks" aria-label="Main">
+      <a href="#tools">Free tools</a>
+      <a href="#creators">Creators</a>
+      <a href="#get-listed">Get listed</a>
+      <a href="#get-listed" class="nav-cta">Go Featured</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <span class="kicker">For VRChat creators</span>
+      <h1>Free tools to ship faster. <em>A page that sells your work.</em></h1>
+      <p class="lede">CreatorDock gives VRChat avatar and world creators three genuinely useful tools — free, right in your browser, nothing uploaded anywhere — plus a showcase page where buyers and groups can actually find you.</p>
+      <div class="btnrow">
+        <a class="btn btn-primary" href="#tools">Use the free tools</a>
+        <a class="btn btn-ghost" href="#creators">Browse creators</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>3 tools</b><span>Thumbnail Maker + Font Generator + Texture Optimizer</span></div>
+        <div><b>100% in-browser</b><span>Your images never leave your device</span></div>
+        <div><b>Free to list</b><span>Featured placement is the paid tier</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURED STRIP -->
+  <div class="wrap featured-strip" aria-label="Featured creator">
+    <div class="strip-card">
+      <div class="avatar" aria-hidden="true">B</div>
+      <div>
+        <span class="badge badge-featured">★ Featured creator</span>
+        <h3 style="margin-top:6px">Briandoesit</h3>
+        <p>Builder of The Deep End — VRChat group DEEP.9922</p>
+      </div>
+      <div class="spacer">
+        <button class="btn btn-primary" id="stripViewBtn" type="button">View page &amp; listings →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <section class="block" id="tools">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>The free tools</h2>
+        <p>The hook is simple: tools creators need every week, done properly, with no sign-up and no watermark. Everything runs on your device.</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Choose a tool">
+        <button class="tab" role="tab" id="tab-thumb" aria-selected="true" aria-controls="panel-thumb" type="button">🖼️ Thumbnail Maker</button>
+        <button class="tab" role="tab" id="tab-font" aria-selected="false" aria-controls="panel-font" type="button">🔤 Font Generator</button>
+        <button class="tab" role="tab" id="tab-tex" aria-selected="false" aria-controls="panel-tex" type="button">🧩 Texture Optimizer</button>
+      </div>
+
+      <!-- THUMBNAIL MAKER -->
+      <div class="tool" id="panel-thumb" role="tabpanel" aria-labelledby="tab-thumb">
+        <div class="tool-grid">
+          <div>
+            <div class="field">
+              <label for="thumbFile" style="margin-bottom:8px">Upload your screenshot / render</label>
+              <input type="file" class="filebtn" id="thumbFile" accept="image/*" aria-label="Upload your screenshot or render">
+              <p class="hint" id="thumbFileName" style="margin:8px 0 0">No image yet — pick one to replace the placeholder scene.</p>
+            </div>
+            <div class="field">
+              <label>Canvas size</label>
+              <div class="seg" id="thumbSizes">
+                <button type="button" data-w="1200" data-h="900" aria-pressed="true">World · 1200×900</button>
+                <button type="button" data-w="900" data-h="1200" aria-pressed="false">Avatar · 900×1200</button>
+                <button type="button" data-w="1024" data-h="1024" aria-pressed="false">Square · 1024×1024</button>
+                <button type="button" data-w="1280" data-h="720" aria-pressed="false">Wide · 1280×720</button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="thumbTitle">Title text</label>
+              <input type="text" id="thumbTitle" value="UNDERWATER LOFT" maxlength="60">
+            </div>
+            <div class="field">
+              <label for="thumbSub">Subtitle <span class="hint">(optional)</span></label>
+              <input type="text" id="thumbSub" value="A chill hangout under the waves" maxlength="80">
+            </div>
+            <div class="field">
+              <label>Title font <span class="hint">— tap one, preview updates instantly</span></label>
+              <div class="fontgrid" id="thumbFonts">
+                <button type="button" class="fontbtn" data-family="Archivo" data-weight="900" data-label="Block Bold" aria-pressed="true" style="font-family:Archivo,sans-serif;font-weight:900"><span>Ag World</span><small>Block Bold · Archivo</small></button>
+                <button type="button" class="fontbtn" data-family="Bebas Neue" data-weight="400" data-label="Tall Poster" aria-pressed="false" style="font-family:'Bebas Neue',sans-serif"><span>Ag World</span><small>Tall Poster · Bebas</small></button>
+                <button type="button" class="fontbtn" data-family="Anton" data-weight="400" data-label="Heavy Poster" aria-pressed="false" style="font-family:Anton,sans-serif"><span>Ag World</span><small>Heavy · Anton</small></button>
+                <button type="button" class="fontbtn" data-family="Bangers" data-weight="400" data-label="Comic Pop" aria-pressed="false" style="font-family:Bangers,cursive"><span>Ag World</span><small>Comic Pop · Bangers</small></button>
+                <button type="button" class="fontbtn" data-family="Luckiest Guy" data-weight="400" data-label="Cartoon Bubble" aria-pressed="false" style="font-family:'Luckiest Guy',cursive"><span>Ag World</span><small>Bubble · Luckiest Guy</small></button>
+                <button type="button" class="fontbtn" data-family="Orbitron" data-weight="900" data-label="Sci-Fi" aria-pressed="false" style="font-family:Orbitron,sans-serif;font-weight:900"><span>Ag World</span><small>Sci-Fi · Orbitron</small></button>
+                <button type="button" class="fontbtn" data-family="Press Start 2P" data-weight="400" data-label="Pixel Game" aria-pressed="false" style="font-family:'Press Start 2P',monospace;font-size:13px"><span>Ag World</span><small>Pixel · Press Start</small></button>
+                <button type="button" class="fontbtn" data-family="Cinzel" data-weight="900" data-label="Fantasy Elegant" aria-pressed="false" style="font-family:Cinzel,serif;font-weight:900"><span>Ag World</span><small>Fantasy · Cinzel</small></button>
+                <button type="button" class="fontbtn" data-family="Pacifico" data-weight="400" data-label="Chill Script" aria-pressed="false" style="font-family:Pacifico,cursive"><span>Ag World</span><small>Script · Pacifico</small></button>
+                <button type="button" class="fontbtn" data-family="Permanent Marker" data-weight="400" data-label="Marker" aria-pressed="false" style="font-family:'Permanent Marker',cursive"><span>Ag World</span><small>Marker · Handwritten</small></button>
+                <button type="button" class="fontbtn" data-family="Fredoka" data-weight="700" data-label="Rounded Friendly" aria-pressed="false" style="font-family:Fredoka,sans-serif;font-weight:700"><span>Ag World</span><small>Rounded · Fredoka</small></button>
+                <button type="button" class="fontbtn" data-family="Oswald" data-weight="700" data-label="Clean Condensed" aria-pressed="false" style="font-family:Oswald,sans-serif;font-weight:700"><span>Ag World</span><small>Condensed · Oswald</small></button>
+              </div>
+              <p class="hint" style="margin:8px 0 0">Selected: <b id="thumbFontName" style="color:var(--teal)">Block Bold — Archivo</b> · Want more styles? Open the Font Generator tab.</p>
+            </div>
+            <div class="field">
+              <label for="thumbFontSize">Title size — <b id="thumbFontSizeVal">100%</b></label>
+              <input type="range" id="thumbFontSize" min="60" max="140" value="100">
+            </div>
+            <div class="field">
+              <label>Text color</label>
+              <div class="swatches" id="thumbColors">
+                <button type="button" class="swatch" data-color="#ffffff" style="background:#ffffff" aria-pressed="true" aria-label="White"></button>
+                <button type="button" class="swatch" data-color="#2dd4bf" style="background:#2dd4bf" aria-pressed="false" aria-label="Teal"></button>
+                <button type="button" class="swatch" data-color="#fbbf24" style="background:#fbbf24" aria-pressed="false" aria-label="Amber"></button>
+                <button type="button" class="swatch" data-color="#38bdf8" style="background:#38bdf8" aria-pressed="false" aria-label="Sky blue"></button>
+                <button type="button" class="swatch" data-color="#fda4af" style="background:#fda4af" aria-pressed="false" aria-label="Rose"></button>
+              </div>
+            </div>
+            <label class="check"><input type="checkbox" id="thumbFrame" checked> Border frame</label>
+            <label class="check"><input type="checkbox" id="thumbBand" checked> Dark band behind text</label>
+            <div class="field" style="margin-top:16px">
+              <label>Text position</label>
+              <p class="hint" style="margin:0 0 8px">Tap or click the title right on the preview and drag it anywhere — mouse or touch, just like Canva. The download keeps the exact spot you leave it in.</p>
+              <button class="btn btn-ghost" id="thumbResetPos" type="button" style="width:100%" disabled>↺ Reset text position</button>
+              <p class="hint" id="thumbPosStatus" style="margin:8px 0 0">Text is at the default spot (bottom). Drag it on the preview to move it.</p>
+            </div>
+            <button class="btn btn-primary" id="thumbDownload" type="button" style="width:100%;margin-top:8px">⬇ Download PNG</button>
+          </div>
+          <div>
+            <div class="previewbox">
+              <canvas id="thumbCanvas" width="1200" height="900" tabindex="0" aria-label="Thumbnail preview — drag the title text to move it, or focus here and use the arrow keys"></canvas>
+              <div class="meta"><span>Export: <b id="thumbMeta">1200 × 900 PNG</b></span><span><b>Drag the text:</b> click / tap the title on the image and move it anywhere. The dashed outline is preview-only — it won't be in your download.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FONT GENERATOR -->
+      <div class="tool" id="panel-font" role="tabpanel" aria-labelledby="tab-font" hidden>
+        <p class="why"><b>How it works:</b> Type anything once — your world name, avatar name, or a title — and see it generated live in 12 different fonts. Download any one as a PNG for thumbnails, signs, and posters, or tap “Use in Thumbnail” to drop it straight into the Thumbnail Maker.</p>
+        <div class="tool-grid">
+          <div>
+            <div class="field">
+              <label for="fontGenText">Your text</label>
+              <input type="text" id="fontGenText" value="UNDERWATER LOFT" maxlength="60" placeholder="Type your world / avatar name…">
+            </div>
+            <div class="field">
+              <label for="fontGenSize">Preview size — <b id="fontGenSizeVal">42px</b></label>
+              <input type="range" id="fontGenSize" min="24" max="72" value="42">
+            </div>
+            <div class="field">
+              <label>Text color</label>
+              <div class="swatches" id="fontGenColors">
+                <button type="button" class="swatch" data-color="#ffffff" style="background:#ffffff" aria-pressed="true" aria-label="White"></button>
+                <button type="button" class="swatch" data-color="#2dd4bf" style="background:#2dd4bf" aria-pressed="false" aria-label="Teal"></button>
+                <button type="button" class="swatch" data-color="#fbbf24" style="background:#fbbf24" aria-pressed="false" aria-label="Amber"></button>
+                <button type="button" class="swatch" data-color="#38bdf8" style="background:#38bdf8" aria-pressed="false" aria-label="Sky blue"></button>
+                <button type="button" class="swatch" data-color="#fda4af" style="background:#fda4af" aria-pressed="false" aria-label="Rose"></button>
+                <button type="button" class="swatch" data-color="#07141c" style="background:#07141c;border-color:#265a74" aria-pressed="false" aria-label="Dark navy"></button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Preview background</label>
+              <div class="seg" id="fontGenBgs">
+                <button type="button" data-bg="dark" aria-pressed="true">Dark</button>
+                <button type="button" data-bg="light" aria-pressed="false">Light</button>
+                <button type="button" data-bg="teal" aria-pressed="false">Teal</button>
+                <button type="button" data-bg="transparent" aria-pressed="false">Transparent</button>
+              </div>
+              <p class="hint" style="margin:8px 0 0">Downloads match this background. Transparent gives you a cut-out PNG you can drop onto any screenshot in another editor.</p>
+            </div>
+            <div class="field">
+              <label class="check" style="padding:0"><input type="checkbox" id="fontGenUpper" checked> Force UPPERCASE for poster fonts</label>
+              <p class="hint" style="margin:4px 0 0">Script fonts (Pacifico, Marker) keep your original casing either way — they look better that way.</p>
+            </div>
+          </div>
+          <div>
+            <div class="font-list" id="fontList" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEXTURE OPTIMIZER -->
+      <div class="tool" id="panel-tex" role="tabpanel" aria-labelledby="tab-tex" hidden>
+        <p class="why"><b>Why bother?</b> VRChat performs better with power-of-two, right-sized textures — a 6000px photo used on a small prop wastes VRAM and download size for everyone who loads your avatar or world.</p>
+        <div class="tool-grid">
+          <div>
+            <div class="field">
+              <label for="texFile" style="margin-bottom:8px">Upload a texture</label>
+              <input type="file" class="filebtn" id="texFile" accept="image/*" aria-label="Upload a texture">
+            </div>
+            <div class="meta" style="margin:0 0 16px" id="texOrigMeta"><span>No file loaded yet.</span></div>
+            <div class="field">
+              <label>Max dimension <span class="hint">— longest side, aspect kept</span></label>
+              <div class="seg" id="texSizes">
+                <button type="button" data-max="512" aria-pressed="false">512</button>
+                <button type="button" data-max="1024" aria-pressed="true">1024</button>
+                <button type="button" data-max="2048" aria-pressed="false">2048</button>
+                <button type="button" data-max="0" aria-pressed="false">Original</button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="texFormat">Format</label>
+              <select id="texFormat">
+                <option value="image/png">PNG — lossless, best for crisp UI / line art</option>
+                <option value="image/jpeg" selected>JPEG — smallest for photos</option>
+                <option value="image/webp">WebP — small, modern</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="texQuality">Quality <span class="hint">(JPEG / WebP)</span> — <b id="texQualityVal">82%</b></label>
+              <input type="range" id="texQuality" min="10" max="100" value="82">
+            </div>
+            <button class="btn btn-primary" id="texDownload" type="button" style="width:100%" disabled>⬇ Download optimized texture</button>
+          </div>
+          <div>
+            <div class="previewbox">
+              <div id="texEmpty" class="empty-note">Upload a texture to see the optimized result here, with its new dimensions and file size.</div>
+              <img id="texPreview" class="preview-img" alt="Optimized texture preview" hidden>
+              <div class="meta" id="texOutMeta" hidden>
+                <span>New size: <b id="texOutDims">—</b></span>
+                <span>File: <b id="texOutSize">—</b></span>
+                <span class="save-note" id="texSaving"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DIRECTORY -->
+  <section class="block alt" id="creators">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Creator directory</h2>
+        <p>Every creator gets a page with their avatars, worlds, prices, and whether commissions are open. Featured pages sit at the top with a badge — that's the paid tier.</p>
+      </div>
+
+      <div class="dir-grid">
+        <article class="creator-card featured">
+          <div class="creator-top">
+            <div class="avatar" aria-hidden="true">B</div>
+            <div>
+              <span class="badge badge-featured">★ Featured</span>
+              <h3 style="margin-top:4px">Briandoesit</h3>
+            </div>
+          </div>
+          <p class="tagline">Builder of The Deep End — VRChat group DEEP.9922</p>
+          <div class="tags"><span class="tag">Avatars</span><span class="tag">Worlds</span><span class="tag">Groups</span></div>
+          <span class="badge badge-closed" style="align-self:flex-start">Commissions: Closed</span>
+          <button class="btn btn-primary" id="cardViewBtn" type="button">View page — 6 listings</button>
+        </article>
+
+        <article class="creator-card empty">
+          <h3>Your page here</h3>
+          <p class="tagline">This spot is empty. Claim it with a free Basic page — your avatars, worlds, prices, and commission status, all in one link you can drop in your VRChat bio.</p>
+          <a class="btn btn-ghost" href="#get-listed">Claim this spot →</a>
+        </article>
+
+        <article class="creator-card empty">
+          <h3>Your page here</h3>
+          <p class="tagline">Featured pages get this top row, the gold badge, and first look from every visitor the free tools bring in. Built for you — no dashboard to learn.</p>
+          <a class="btn btn-ghost" href="#get-listed">Go Featured →</a>
+        </article>
+      </div>
+
+      <!-- DETAIL VIEW -->
+      <div class="detail" id="creatorDetail" aria-live="polite">
+        <div class="detail-head">
+          <div class="avatar" aria-hidden="true">B</div>
+          <div style="flex:1;min-width:240px">
+            <span class="badge badge-featured">★ Featured creator</span>
+            <span class="badge badge-closed" style="margin-left:6px">Commissions: Closed</span>
+            <h3 style="font-size:28px;margin:8px 0 4px">Briandoesit</h3>
+            <p style="margin:0;color:var(--teal);font-weight:600">Builder of The Deep End — VRChat group DEEP.9922</p>
+            <p style="color:var(--muted);margin:10px 0 0;max-width:640px">VRChat creator running The Deep End group and its worlds. Avatars Suki and Meda are in review for the group store; the Deep Diver pass unlocks subscriber perks.</p>
+            <div class="tags" style="margin-top:12px"><span class="tag">Avatars</span><span class="tag">Worlds</span><span class="tag">Groups</span></div>
+          </div>
+          <button class="btn btn-ghost btn-small" id="detailClose" type="button">Close ✕</button>
+        </div>
+
+        <div class="listings">
+          <div class="listing"><span class="type">Avatar</span><h4>Suki</h4><span class="price">300 Credits</span><a class="btn btn-primary btn-small" href="https://vrchat.com/home/group/grp_5af84357-a219-4e31-99d9-9a3112c9c18e" target="_blank" rel="noopener">View in VRChat ↗</a></div>
+          <div class="listing"><span class="type">Avatar</span><h4>Meda</h4><span class="price">300 Credits</span><a class="btn btn-primary btn-small" href="https://vrchat.com/home/group/grp_5af84357-a219-4e31-99d9-9a3112c9c18e" target="_blank" rel="noopener">View in VRChat ↗</a></div>
+          <div class="listing"><span class="type">Group Pass</span><h4>Deep Diver</h4><span class="price">300 Credits/month</span><a class="btn btn-primary btn-small" href="https://vrchat.com/home/group/grp_5af84357-a219-4e31-99d9-9a3112c9c18e" target="_blank" rel="noopener">View in VRChat ↗</a></div>
+          <div class="listing"><span class="type">World</span><h4>UnderWater Loft</h4><span class="price">Free</span><a class="btn btn-primary btn-small" href="https://vrchat.com/home/world/wrld_eb433b5d-3996-4d55-b34e-198f1967656e" target="_blank" rel="noopener">Visit world ↗</a></div>
+          <div class="listing"><span class="type">World</span><h4>Hillside Hangout</h4><span class="price">Free</span><a class="btn btn-primary btn-small" href="https://vrchat.com/home/world/wrld_3604f3d2-6475-4af6-9085-bf43f9828277" target="_blank" rel="noopener">Visit world ↗</a></div>
+          <div class="listing"><span class="type">World</span><h4>Midnight High</h4><span class="price">Free</span><a class="btn btn-primary btn-small" href="https://vrchat.com/home/world/wrld_fcf911dc-0161-4796-9e8b-9485d7a5fea4" target="_blank" rel="noopener">Visit world ↗</a></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GET LISTED -->
+  <section class="block" id="get-listed">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Get listed — or go Featured</h2>
+        <p>No logins, no dashboard, no payment form on this page. It's concierge style: you send an application, we build your page for you by hand, and Featured is arranged directly with you.</p>
+      </div>
+
+      <div class="price-grid">
+        <div class="price-card">
+          <h3>Basic page</h3>
+          <div class="amount">Free</div>
+          <ul>
+            <li>Your name, tagline, bio, and tags</li>
+            <li>Listings for your avatars &amp; worlds with prices and VRChat links</li>
+            <li>Commissions Open / Closed badge</li>
+            <li>Listed in the directory grid</li>
+          </ul>
+        </div>
+        <div class="price-card hot">
+          <span class="badge badge-featured">Paid tier</span>
+          <h3 style="margin-top:8px">Featured page</h3>
+          <div class="amount">Top billing</div>
+          <ul>
+            <li>Everything in Basic</li>
+            <li>Top of the directory + gold Featured badge</li>
+            <li>Featured strip under the hero, like Briandoesit's</li>
+            <li>First look from visitors the free tools bring in</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3 style="font-size:22px;margin-bottom:4px">Apply for your page</h3>
+        <p style="color:var(--muted);margin:0 0 20px">Fill this in and hit submit — you'll get a ready-to-send summary to copy. Send it to the CreatorDock team however you normally reach us, and we'll review it and build your page.</p>
+        <form id="applyForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="fName">Creator name *</label>
+              <input type="text" id="fName" required maxlength="60" placeholder="e.g. YourVRChatName">
+            </div>
+            <div class="field">
+              <label for="fLink">VRChat profile link *</label>
+              <input type="url" id="fLink" required placeholder="https://vrchat.com/home/user/…">
+            </div>
+            <div class="field" style="grid-column:1/-1">
+              <label for="fMakes">What do you make? *</label>
+              <textarea id="fMakes" required rows="3" maxlength="500" placeholder="Avatars, worlds, group passes — names, prices, anything you want listed."></textarea>
+            </div>
+            <div class="field" style="grid-column:1/-1">
+              <label>Which page?</label>
+              <div class="radio-row">
+                <label class="radio-pill"><input type="radio" name="tier" value="Basic (free)" checked> Basic — free</label>
+                <label class="radio-pill"><input type="radio" name="tier" value="Featured (paid)"> Featured — paid, top of directory</label>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary" type="submit" style="margin-top:6px">Build my application summary</button>
+        </form>
+
+        <div class="confirm" id="applyConfirm" role="status">
+          <h3>✓ Application ready — one last step</h3>
+          <p style="margin:0;color:var(--muted)">This page can't send email on its own, so nothing has been sent yet. Copy the summary below and send it to the CreatorDock team — they'll review it and add your page. That's genuinely all you need to do.</p>
+          <div id="summaryBox"></div>
+          <button class="btn btn-primary" id="copyBtn" type="button">📋 Copy my application</button>
+          <span id="copyDone" style="margin-left:10px;font-weight:700;color:var(--green)" hidden>Copied ✓</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b style="color:var(--ink)">CreatorDock</b> — free tools + showcase pages for VRChat creators.</span>
+    <span style="margin-left:auto">Home of The Deep End · group DEEP.9922 · Not affiliated with VRChat Inc.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+function $(id){return document.getElementById(id);}
+function fmtBytes(b){if(b==null||isNaN(b))return "—";if(b<1024)return b+" B";if(b<1048576)return (b/1024).toFixed(1)+" KB";return (b/1048576).toFixed(2)+" MB";}
+
+/* ---------- SHARED FONTS ---------- */
+var FONTS=[
+  {family:"Archivo",weight:"900",label:"Block Bold",note:"Clean & heavy — all-rounder"},
+  {family:"Bebas Neue",weight:"400",label:"Tall Poster",note:"Tall, tight, poster-style"},
+  {family:"Anton",weight:"400",label:"Heavy Poster",note:"Thick impact headline"},
+  {family:"Bangers",weight:"400",label:"Comic Pop",note:"Comic / fun worlds"},
+  {family:"Luckiest Guy",weight:"400",label:"Cartoon Bubble",note:"Big bubbly cartoon"},
+  {family:"Orbitron",weight:"900",label:"Sci-Fi",note:"Neon / cyber / space"},
+  {family:"Press Start 2P",weight:"400",label:"Pixel Game",note:"Retro arcade — use short text",pixel:true},
+  {family:"Cinzel",weight:"900",label:"Fantasy Elegant",note:"Fantasy / castle / elegant"},
+  {family:"Pacifico",weight:"400",label:"Chill Script",note:"Relaxed script — keeps casing",script:true},
+  {family:"Permanent Marker",weight:"400",label:"Marker",note:"Handwritten marker",script:true},
+  {family:"Fredoka",weight:"700",label:"Rounded Friendly",note:"Soft, rounded, friendly"},
+  {family:"Oswald",weight:"700",label:"Clean Condensed",note:"Clean & narrow"}
+];
+function fontStack(f){return "'"+f.family+"', sans-serif";}
+function ensureFont(f,cb){
+  if(document.fonts&&document.fonts.load){
+    document.fonts.load(f.weight+" 40px "+fontStack(f)).then(function(){cb&&cb();}).catch(function(){cb&&cb();});
+  }else if(cb)cb();
+}
+
+/* ---------- TABS ---------- */
+var tabThumb=$("tab-thumb"),tabTex=$("tab-tex"),tabFont=$("tab-font"),panelThumb=$("panel-thumb"),panelTex=$("panel-tex"),panelFont=$("panel-font");
+function selectTab(which){
+  tabThumb.setAttribute("aria-selected",which==="thumb"?"true":"false");
+  tabFont.setAttribute("aria-selected",which==="font"?"true":"false");
+  tabTex.setAttribute("aria-selected",which==="tex"?"true":"false");
+  panelThumb.hidden=which!=="thumb"; panelFont.hidden=which!=="font"; panelTex.hidden=which!=="tex";
+  if(which==="font"&&document.fonts&&document.fonts.ready){document.fonts.ready.then(renderFontList);}
+}
+tabThumb.addEventListener("click",function(){selectTab("thumb");});
+tabFont.addEventListener("click",function(){selectTab("font");});
+tabTex.addEventListener("click",function(){selectTab("tex");});
+
+/* ---------- THUMBNAIL MAKER ---------- */
+var tCanvas=$("thumbCanvas"),tCtx=tCanvas.getContext("2d");
+var tImg=null,tColor="#ffffff";
+var tFont=FONTS[0],tFontScale=1;
+var tPos=null,tBlock=null,tHover=false,tSelected=false,tDragging=false,tDragOff={x:0,y:0};
+function setThumbFont(f){
+  tFont=f;
+  var grid=$("thumbFonts");
+  if(grid){grid.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.family===f.family?"true":"false");});}
+  var nameEl=$("thumbFontName"); if(nameEl)nameEl.textContent=f.label+" — "+f.family;
+  ensureFont(f,drawThumb);
+}
+function drawThumb(cleanArg){
+  var clean=(cleanArg===true);
+  var W=tCanvas.width,H=tCanvas.height;
+  // background
+  if(tImg){
+    var s=Math.max(W/tImg.naturalWidth,H/tImg.naturalHeight);
+    var dw=tImg.naturalWidth*s,dh=tImg.naturalHeight*s;
+    tCtx.fillStyle="#0a2a3a";tCtx.fillRect(0,0,W,H);
+    tCtx.drawImage(tImg,(W-dw)/2,(H-dh)/2,dw,dh);
+  }else{
+    var g=tCtx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,"#0e3a4d");g.addColorStop(.6,"#08222f");g.addColorStop(1,"#04141d");
+    tCtx.fillStyle=g;tCtx.fillRect(0,0,W,H);
+    tCtx.fillStyle="rgba(45,212,191,.14)";
+    [[.18,.3,90],[.78,.22,130],[.6,.55,60],[.88,.6,80]].forEach(function(c){
+      tCtx.beginPath();tCtx.arc(W*c[0],H*c[1],c[2],0,7);tCtx.fill();
+    });
+    tCtx.fillStyle="rgba(238,247,250,.55)";
+    tCtx.font="600 "+Math.round(H*.035)+"px Inter, sans-serif";tCtx.textAlign="center";
+    tCtx.fillText("YOUR IMAGE HERE — UPLOAD TO REPLACE",W/2,H*.42);
+  }
+  var title=($("thumbTitle").value||"").trim(),sub=($("thumbSub").value||"").trim();
+  // bottom gradient band
+  if($("thumbBand").checked&&(title||sub)){
+    var bandH=H*.42,bg2=tCtx.createLinearGradient(0,H-bandH,0,H);
+    bg2.addColorStop(0,"rgba(2,10,14,0)");bg2.addColorStop(.45,"rgba(2,10,14,.72)");bg2.addColorStop(1,"rgba(2,10,14,.94)");
+    tCtx.fillStyle=bg2;tCtx.fillRect(0,H-bandH,W,bandH);
+  }
+  // text — one draggable block: title + subtitle move together
+  var pad=Math.round(W*.055);
+  var baseTitleSize=Math.min(Math.round(H*.115),Math.round(W*.085));
+  if(tFont.pixel)baseTitleSize=Math.round(baseTitleSize*.58);
+  var titleSize=Math.max(18,Math.round(baseTitleSize*tFontScale));
+  var subSize=Math.round(baseTitleSize*.34*tFontScale);
+  var titleLines=[];
+  if(title){
+    var displayTitle=tFont.script?title:title.toUpperCase();
+    tCtx.font=tFont.weight+" "+titleSize+"px "+fontStack(tFont);
+    var words=displayTitle.split(/\s+/),curLine="";
+    words.forEach(function(w){var test=curLine?curLine+" "+w:w;if(tCtx.measureText(test).width>W-pad*2&&curLine){titleLines.push(curLine);curLine=w;}else curLine=test;});
+    if(curLine)titleLines.push(curLine);titleLines=titleLines.slice(0,2);
+  }
+  var titleLineH=Math.round(titleSize*1.12);
+  var subLineH=sub?Math.round(subSize*1.35):0;
+  var blockGap=(sub&&titleLines.length)?Math.round(titleSize*.16):0;
+  var blockW=0;
+  tCtx.font=tFont.weight+" "+titleSize+"px "+fontStack(tFont);
+  titleLines.forEach(function(l){blockW=Math.max(blockW,tCtx.measureText(l).width);});
+  if(sub){tCtx.font="500 "+subSize+"px Inter, sans-serif";blockW=Math.max(blockW,tCtx.measureText(sub).width);}
+  var blockH=titleLines.length*titleLineH+blockGap+subLineH;
+  var blockX=pad,blockY=H-pad-blockH;
+  if(tPos){blockX=Math.round(tPos.fx*W);blockY=Math.round(tPos.fy*H);}
+  blockX=Math.max(0,Math.min(blockX,Math.max(0,W-blockW)));blockY=Math.max(0,Math.min(blockY,Math.max(0,H-blockH)));
+  var grabPad=Math.max(10,Math.round(H*.016));
+  tBlock=(title||sub)?{x:blockX-grabPad,y:blockY-grabPad,w:blockW+grabPad*2,h:blockH+grabPad*2,innerX:blockX,innerY:blockY,innerW:blockW,innerH:blockH}:null;
+  tCtx.textAlign="left";tCtx.textBaseline="top";tCtx.fillStyle=tColor;
+  tCtx.shadowColor="rgba(0,0,0,.55)";tCtx.shadowBlur=Math.round(H*.012);tCtx.shadowOffsetY=3;
+  var ty=blockY;
+  titleLines.forEach(function(l){tCtx.font=tFont.weight+" "+titleSize+"px "+fontStack(tFont);tCtx.fillText(l,blockX,ty);ty+=titleLineH;});
+  if(sub){tCtx.font="500 "+subSize+"px Inter, sans-serif";tCtx.globalAlpha=.92;tCtx.fillText(sub,blockX,ty+blockGap);tCtx.globalAlpha=1;}
+  tCtx.shadowColor="transparent";tCtx.shadowBlur=0;tCtx.shadowOffsetY=0;tCtx.textBaseline="alphabetic";
+  // frame
+  if($("thumbFrame").checked){
+    var lw=Math.max(6,Math.round(W*.008));
+    tCtx.strokeStyle=tColor;tCtx.globalAlpha=.95;tCtx.lineWidth=lw;
+    tCtx.strokeRect(lw/2+4,lw/2+4,W-lw-8,H-lw-8);tCtx.globalAlpha=1;
+  }
+  // selection outline — preview only, never baked into the download (download redraws clean)
+  if(!clean&&(tHover||tDragging||tSelected)&&tBlock){
+    tCtx.save();
+    tCtx.strokeStyle="#2dd4bf";tCtx.lineWidth=Math.max(2,Math.round(W*.0025));tCtx.setLineDash([10,7]);
+    tCtx.fillStyle="rgba(45,212,191,.08)";
+    tCtx.fillRect(tBlock.x,tBlock.y,tBlock.w,tBlock.h);
+    tCtx.strokeRect(tBlock.x,tBlock.y,tBlock.w,tBlock.h);
+    tCtx.setLineDash([]);tCtx.fillStyle="#2dd4bf";
+    var hs=Math.max(7,Math.round(W*.007));
+    [[tBlock.x,tBlock.y],[tBlock.x+tBlock.w,tBlock.y],[tBlock.x,tBlock.y+tBlock.h],[tBlock.x+tBlock.w,tBlock.y+tBlock.h]].forEach(function(pt){tCtx.fillRect(pt[0]-hs/2,pt[1]-hs/2,hs,hs);});
+    tCtx.restore();
+  }
+  $("thumbMeta").textContent=W+" × "+H+" PNG";
+  var resetBtn=$("thumbResetPos"),posStatus=$("thumbPosStatus");
+  if(resetBtn)resetBtn.disabled=!tPos;
+  if(posStatus)posStatus.textContent=tPos?"Text moved — drag it again, or reset it to put it back at the bottom.":"Text is at the default spot (bottom). Drag it on the preview to move it.";
+}
+$("thumbFile").addEventListener("change",function(e){
+  var f=e.target.files&&e.target.files[0];if(!f)return;
+  $("thumbFileName").textContent=f.name+" · "+fmtBytes(f.size);
+  var url=URL.createObjectURL(f),im=new Image();
+  im.onload=function(){tImg=im;drawThumb();};
+  im.src=url;
+});
+$("thumbSizes").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed","false");});
+  b.setAttribute("aria-pressed","true");
+  tCanvas.width=parseInt(b.dataset.w,10);tCanvas.height=parseInt(b.dataset.h,10);
+  drawThumb();
+});
+$("thumbColors").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed","false");});
+  b.setAttribute("aria-pressed","true");tColor=b.dataset.color;drawThumb();
+});
+["thumbTitle","thumbSub"].forEach(function(id){$(id).addEventListener("input",drawThumb);});
+$("thumbFonts").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  var found=null;FONTS.forEach(function(f){if(f.family===b.dataset.family)found=f;});
+  if(found)setThumbFont(found);
+});
+$("thumbFontSize").addEventListener("input",function(){
+  $("thumbFontSizeVal").textContent=this.value+"%";
+  tFontScale=parseInt(this.value,10)/100;drawThumb();
+});
+$("thumbFrame").addEventListener("change",drawThumb);
+$("thumbBand").addEventListener("change",drawThumb);
+/* Drag the title/subtitle block on the canvas — mouse + touch via Pointer Events */
+function thumbCanvasPoint(e){
+  var r=tCanvas.getBoundingClientRect();
+  return {x:(e.clientX-r.left)*(tCanvas.width/r.width),y:(e.clientY-r.top)*(tCanvas.height/r.height)};
+}
+function thumbHit(pt){return !!(tBlock&&pt.x>=tBlock.x&&pt.x<=tBlock.x+tBlock.w&&pt.y>=tBlock.y&&pt.y<=tBlock.y+tBlock.h);}
+function thumbSetPos(innerX,innerY){
+  var W=tCanvas.width,H=tCanvas.height;if(!tBlock)return;
+  innerX=Math.max(0,Math.min(innerX,W-tBlock.innerW));innerY=Math.max(0,Math.min(innerY,H-tBlock.innerH));
+  tPos={fx:innerX/W,fy:innerY/H};
+}
+tCanvas.addEventListener("pointerdown",function(e){
+  var pt=thumbCanvasPoint(e);
+  if(thumbHit(pt)){
+    tDragging=true;tSelected=true;tHover=true;
+    tDragOff={x:pt.x-tBlock.innerX,y:pt.y-tBlock.innerY};
+    try{tCanvas.setPointerCapture(e.pointerId);}catch(err){}
+    tCanvas.classList.add("dragging");tCanvas.style.cursor="grabbing";
+    e.preventDefault();drawThumb();
+  }else if(tSelected){tSelected=false;drawThumb();}
+});
+tCanvas.addEventListener("pointermove",function(e){
+  var pt=thumbCanvasPoint(e);
+  if(tDragging){thumbSetPos(pt.x-tDragOff.x,pt.y-tDragOff.y);drawThumb();return;}
+  var hit=thumbHit(pt);
+  if(hit!==tHover){tHover=hit;drawThumb();}
+  tCanvas.style.cursor=hit?"grab":"default";
+});
+function thumbEndDrag(e){
+  if(!tDragging)return;tDragging=false;tCanvas.classList.remove("dragging");
+  var pt=null;try{pt=thumbCanvasPoint(e);}catch(err){}
+  tCanvas.style.cursor=(pt&&thumbHit(pt))?"grab":"default";drawThumb();
+}
+tCanvas.addEventListener("pointerup",thumbEndDrag);
+tCanvas.addEventListener("pointercancel",thumbEndDrag);
+tCanvas.addEventListener("pointerleave",function(){if(!tDragging&&tHover){tHover=false;drawThumb();}});
+tCanvas.addEventListener("keydown",function(e){
+  var keys={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};
+  if(!keys[e.key]||!tBlock)return;
+  e.preventDefault();
+  if(!tPos)tPos={fx:tBlock.innerX/tCanvas.width,fy:tBlock.innerY/tCanvas.height};
+  var step=e.shiftKey?24:8;
+  thumbSetPos(tPos.fx*tCanvas.width+keys[e.key][0]*step,tPos.fy*tCanvas.height+keys[e.key][1]*step);
+  tSelected=true;drawThumb();
+});
+$("thumbResetPos").addEventListener("click",function(){tPos=null;tSelected=false;drawThumb();});
+$("thumbDownload").addEventListener("click",function(){
+  drawThumb(true);
+  var a=document.createElement("a");
+  a.download="creatordock-thumbnail-"+tCanvas.width+"x"+tCanvas.height+".png";
+  a.href=tCanvas.toDataURL("image/png");a.click();
+  drawThumb();
+});
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(drawThumb);}
+drawThumb();
+
+/* ---------- FONT GENERATOR ---------- */
+var fgColor="#ffffff",fgBg="dark";
+function fgDisplayText(f){
+  var raw=($("fontGenText").value||"").trim()||"Your Text Here";
+  if($("fontGenUpper").checked&&!f.script)return raw.toUpperCase();
+  return raw;
+}
+function renderFontList(){
+  var list=$("fontList");if(!list)return;
+  var size=parseInt($("fontGenSize").value,10)||42;
+  list.innerHTML="";
+  FONTS.forEach(function(f,idx){
+    var card=document.createElement("div");card.className="font-card";
+    var previewSize=f.pixel?Math.max(16,Math.round(size*.55)):size;
+    var bgClass=fgBg==="dark"?"":(fgBg==="light"?" on-light":(fgBg==="teal"?" on-teal":" on-transparent"));
+    card.innerHTML=
+      '<div class="font-card-head"><b>'+f.label+'</b><span>'+f.family+' · '+f.note+'</span></div>'+
+      '<div class="font-preview'+bgClass+'" style="font-family:'+fontStack(f)+';font-weight:'+f.weight+';font-size:'+previewSize+'px;color:'+fgColor+'">'+fgDisplayText(f).replace(/</g,"&lt;")+'</div>'+
+      '<div class="font-actions">'+
+        '<button type="button" class="btn btn-primary btn-small" data-dl="'+idx+'">⬇ Download PNG</button>'+
+        '<button type="button" class="btn btn-ghost btn-small" data-use="'+idx+'">Use in Thumbnail →</button>'+
+      '</div>';
+    list.appendChild(card);
+  });
+}
+function downloadFontPNG(f){
+  ensureFont(f,function(){
+    var text=fgDisplayText(f);
+    var exportSize=f.pixel?72:120;
+    var padX=48,padY=36;
+    var meas=document.createElement("canvas").getContext("2d");
+    meas.font=f.weight+" "+exportSize+"px "+fontStack(f);
+    // wrap at 900px max
+    var words=text.split(/\s+/),lines=[],line="";
+    words.forEach(function(w){var test=line?line+" "+w:w;if(meas.measureText(test).width>900&&line){lines.push(line);line=w;}else line=test;});
+    if(line)lines.push(line);if(!lines.length)lines=[text];
+    var maxW=0;lines.forEach(function(l){maxW=Math.max(maxW,meas.measureText(l).width);});
+    var lineH=Math.round(exportSize*1.18);
+    var c=document.createElement("canvas");c.width=Math.ceil(maxW+padX*2);c.height=lines.length*lineH+padY*2;
+    var ctx=c.getContext("2d");
+    if(fgBg==="dark"){ctx.fillStyle="#04141d";ctx.fillRect(0,0,c.width,c.height);}
+    else if(fgBg==="light"){ctx.fillStyle="#eef7fa";ctx.fillRect(0,0,c.width,c.height);}
+    else if(fgBg==="teal"){ctx.fillStyle="#0f766e";ctx.fillRect(0,0,c.width,c.height);}
+    // transparent: leave clear
+    ctx.font=f.weight+" "+exportSize+"px "+fontStack(f);ctx.fillStyle=fgColor;ctx.textAlign="left";ctx.textBaseline="top";
+    ctx.shadowColor="rgba(0,0,0,.45)";ctx.shadowBlur=fgBg==="transparent"?8:0;ctx.shadowOffsetY=2;
+    lines.forEach(function(l,i){ctx.fillText(l,padX,padY+i*lineH);});
+    var a=document.createElement("a");
+    var slug=f.family.toLowerCase().replace(/[^a-z0-9]+/g,"-");
+    a.download="creatordock-font-"+slug+".png";a.href=c.toDataURL("image/png");a.click();
+  });
+}
+$("fontGenText").addEventListener("input",renderFontList);
+$("fontGenUpper").addEventListener("change",renderFontList);
+$("fontGenSize").addEventListener("input",function(){$("fontGenSizeVal").textContent=this.value+"px";renderFontList();});
+$("fontGenColors").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed","false");});
+  b.setAttribute("aria-pressed","true");fgColor=b.dataset.color;renderFontList();
+});
+$("fontGenBgs").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed","false");});
+  b.setAttribute("aria-pressed","true");fgBg=b.dataset.bg;renderFontList();
+});
+$("fontList").addEventListener("click",function(e){
+  var dl=e.target.closest("[data-dl]"),use=e.target.closest("[data-use]");
+  if(dl){downloadFontPNG(FONTS[parseInt(dl.dataset.dl,10)]);return;}
+  if(use){
+    var f=FONTS[parseInt(use.dataset.use,10)];
+    $("thumbTitle").value=($("fontGenText").value||"").trim()||$("thumbTitle").value;
+    // sync thumbnail color to generator color
+    tColor=fgColor;
+    var tc=$("thumbColors");if(tc){tc.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.color===fgColor?"true":"false");});}
+    setThumbFont(f);selectTab("thumb");drawThumb();
+    $("tools").scrollIntoView({behavior:"smooth"});
+  }
+});
+renderFontList();
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(renderFontList);}
+
+/* ---------- TEXTURE OPTIMIZER ---------- */
+var texImg=null,texName="texture",texOrigSize=null,texMax=1024,texBlobUrl=null;
+function processTex(){
+  if(!texImg)return;
+  var ow=texImg.naturalWidth,oh=texImg.naturalHeight;
+  var scale=texMax===0?1:Math.min(1,texMax/Math.max(ow,oh));
+  var nw=Math.max(1,Math.round(ow*scale)),nh=Math.max(1,Math.round(oh*scale));
+  var c=document.createElement("canvas");c.width=nw;c.height=nh;
+  c.getContext("2d").drawImage(texImg,0,0,nw,nh);
+  var fmt=$("texFormat").value,q=parseInt($("texQuality").value,10)/100;
+  c.toBlob(function(blob){
+    if(!blob)return;
+    if(texBlobUrl)URL.revokeObjectURL(texBlobUrl);
+    texBlobUrl=URL.createObjectURL(blob);
+    var prev=$("texPreview");prev.src=texBlobUrl;prev.hidden=false;
+    $("texEmpty").hidden=true;
+    $("texOutMeta").hidden=false;
+    $("texOutDims").textContent=nw+" × "+nh+" px";
+    $("texOutSize").textContent=fmtBytes(blob.size);
+    if(texOrigSize){var saved=100-Math.round(blob.size/texOrigSize*100);$("texSaving").textContent=saved>0?("▼ "+saved+"% smaller"):"";}
+    var ext=fmt==="image/png"?"png":(fmt==="image/webp"?"webp":"jpg");
+    var dl=$("texDownload");dl.disabled=false;dl.dataset.ext=ext;
+  },fmt,fmt==="image/png"?undefined:q);
+}
+$("texFile").addEventListener("change",function(e){
+  var f=e.target.files&&e.target.files[0];if(!f)return;
+  texName=f.name.replace(/\.[^.]+$/,"")||"texture";texOrigSize=f.size;
+  var url=URL.createObjectURL(f),im=new Image();
+  im.onload=function(){
+    texImg=im;
+    $("texOrigMeta").innerHTML="<span>Original: <b>"+im.naturalWidth+" × "+im.naturalHeight+" px</b></span><span>File: <b>"+fmtBytes(f.size)+"</b></span><span>"+f.name+"</span>";
+    processTex();
+  };
+  im.src=url;
+});
+$("texSizes").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed","false");});
+  b.setAttribute("aria-pressed","true");texMax=parseInt(b.dataset.max,10);processTex();
+});
+$("texFormat").addEventListener("change",processTex);
+$("texQuality").addEventListener("input",function(){
+  $("texQualityVal").textContent=this.value+"%";processTex();
+});
+$("texDownload").addEventListener("click",function(){
+  if(!texBlobUrl)return;
+  var a=document.createElement("a");
+  a.download=texName+"-optimized."+(this.dataset.ext||"jpg");
+  a.href=texBlobUrl;a.click();
+});
+
+/* ---------- CREATOR DETAIL ---------- */
+var detail=$("creatorDetail");
+function openDetail(){detail.classList.add("open");detail.scrollIntoView({behavior:"smooth",block:"nearest"});}
+$("stripViewBtn").addEventListener("click",openDetail);
+$("cardViewBtn").addEventListener("click",openDetail);
+$("detailClose").addEventListener("click",function(){detail.classList.remove("open");$("creators").scrollIntoView({behavior:"smooth"});});
+
+/* ---------- APPLY FORM ---------- */
+var lastSummary="";
+$("applyForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var tier=document.querySelector('input[name="tier"]:checked').value;
+  lastSummary=
+"CREATORDOCK — CREATOR PAGE APPLICATION\n"+
+"--------------------------------------\n"+
+"Creator name: "+$("fName").value.trim()+"\n"+
+"VRChat profile: "+$("fLink").value.trim()+"\n"+
+"Page type: "+tier+"\n"+
+"What I make:\n"+$("fMakes").value.trim()+"\n";
+  $("summaryBox").textContent=lastSummary;
+  $("applyConfirm").classList.add("show");
+  $("copyDone").hidden=true;
+  $("applyConfirm").scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+$("copyBtn").addEventListener("click",function(){
+  function done(){$("copyDone").hidden=false;}
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(lastSummary).then(done).catch(function(){fallback();});
+  }else fallback();
+  function fallback(){
+    var r=document.createRange();r.selectNodeContents($("summaryBox"));
+    var sel=window.getSelection();sel.removeAllRanges();sel.addRange(r);
+    try{document.execCommand("copy");done();}catch(err){}
+    sel.removeAllRanges();
+  }
+});
+})();
+</script>
+</body>
+</html>
